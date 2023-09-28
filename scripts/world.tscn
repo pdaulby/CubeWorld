@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://d2lkua6f2ssfw"]
+
+[ext_resource type="Script" path="res://scripts/world.gd" id="1_cut3b"]
+[ext_resource type="PackedScene" uid="uid://0aeyiixqh43a" path="res://ground_cube.tscn" id="2_70cyh"]
+[ext_resource type="Script" path="res://scripts/ClickHandler.gd" id="3_138lr"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ff7ja"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xcfyk"]
+albedo_color = Color(0.396078, 0.607843, 0.247059, 1)
+
+[sub_resource type="Environment" id="Environment_d401f"]
+ambient_light_color = Color(0.290196, 0.662745, 1, 1)
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_cut3b")
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="Ground" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 3, 2.08165e-12, -0.5, 2.08165e-12)
+mesh = SubResource("PlaneMesh_ff7ja")
+surface_material_override/0 = SubResource("StandardMaterial3D_xcfyk")
+
+[node name="GroundCube" parent="Environment" instance=ExtResource("2_70cyh")]
+
+[node name="GroundCube2" parent="Environment" instance=ExtResource("2_70cyh")]
+transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 1, 2.08165e-12, 1)
+
+[node name="GroundCube3" parent="Environment" instance=ExtResource("2_70cyh")]
+transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 1, 2.08165e-12, 2.08165e-12)
+constant_linear_velocity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.707107, 0.612372, -0.353553, 1.74393e-16, 0.5, 0.866025, 0.707107, 0.612373, -0.353553, -2, 3, -2)
+size = 3.0
+script = ExtResource("3_138lr")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_d401f")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 0.312783, 0.949825, 0, -0.949825, 0.312783, 0, 1.02772, 0)
