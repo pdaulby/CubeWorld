@@ -1,8 +1,5 @@
 extends Camera3D
 
-@export var colorA: Color = Color.SEA_GREEN
-@export var colorB: Color = Color.DARK_GREEN
-
 func _ready():
 	print_debug("hello")
 	pass # Replace with function body.
@@ -24,8 +21,6 @@ func _input(event: InputEvent):
 	
 func handle_click(result):
 	print_debug(result.collider)
-	# Handle result here
-	pass
 	
 func _process(delta):
 	pass
