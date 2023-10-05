@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://d2lkua6f2ssfw"]
 
-[ext_resource type="Script" path="res://scripts/world.gd" id="1_cut3b"]
-[ext_resource type="PackedScene" uid="uid://0aeyiixqh43a" path="res://ground_cube.tscn" id="2_70cyh"]
+[ext_resource type="Script" path="res://scripts/cubes/world.gd" id="1_3khj0"]
+[ext_resource type="PackedScene" uid="uid://0aeyiixqh43a" path="res://scenes/ground_cube.tscn" id="2_70cyh"]
 [ext_resource type="Script" path="res://scripts/ClickHandler.gd" id="3_138lr"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ff7ja"]
@@ -13,7 +13,7 @@ albedo_color = Color(0.298039, 0.592157, 0.611765, 1)
 ambient_light_color = Color(0.290196, 0.662745, 1, 1)
 
 [node name="World" type="Node3D"]
-script = ExtResource("1_cut3b")
+script = ExtResource("1_3khj0")
 
 [node name="Environment" type="Node3D" parent="."]
 
@@ -33,6 +33,7 @@ transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.00019159
 
 [node name="GroundCube2" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
 transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 0, 2.08165e-12, 0)
+visible = false
 
 [node name="GroundCube3" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
 transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 0, 2.08165e-12, -1)

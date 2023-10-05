@@ -1,7 +1,6 @@
 extends Camera3D
 
 func _ready():
-	print_debug("hello")
 	pass # Replace with function body.
 
 # handle ui elements https://zhifez-lee.medium.com/godot-4-0-block-raycast-when-clicking-on-ui-b12bb4a1fbe0
