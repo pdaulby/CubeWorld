@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://d2lkua6f2ssfw"]
+[gd_scene load_steps=6 format=3 uid="uid://d2lkua6f2ssfw"]
 
 [ext_resource type="Script" path="res://scripts/cubes/world.gd" id="1_3khj0"]
-[ext_resource type="PackedScene" uid="uid://0aeyiixqh43a" path="res://scenes/ground_cube.tscn" id="2_70cyh"]
 [ext_resource type="Script" path="res://scripts/ClickHandler.gd" id="3_138lr"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ff7ja"]
@@ -24,95 +23,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_xcfyk")
 
 [node name="Cubes" type="Node3D" parent="Environment"]
 
-[node name="GroundCube7" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 1, 0, 0)
-constant_linear_velocity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
-
-[node name="GroundCube" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 0, 1, -1)
-
-[node name="GroundCube2" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 0, 2.08165e-12, 0)
-visible = false
-
-[node name="GroundCube3" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 0, 2.08165e-12, -1)
-constant_linear_velocity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
-
-[node name="GroundCube4" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 0, 0, -2)
-
-[node name="GroundCube5" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 1, 2.08165e-12, -1)
-
-[node name="GroundCube6" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 1, 2.08165e-12, -2)
-constant_linear_velocity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
-
-[node name="GroundCube9" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, -2, 2.08165e-12, -1)
-constant_linear_velocity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
-
-[node name="GroundCube10" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, -2, 0, -2)
-
-[node name="GroundCube11" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, -1, 2.08165e-12, -1)
-
-[node name="GroundCube12" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, -1, 2.08165e-12, -2)
-constant_linear_velocity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
-
-[node name="GroundCube13" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, -1, 0, 0)
-constant_linear_velocity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
-
-[node name="GroundCube14" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 0, 1, 2)
-
-[node name="GroundCube15" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 0, 2.08165e-12, 3)
-
-[node name="GroundCube16" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 0, 2.08165e-12, 2)
-constant_linear_velocity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
-
-[node name="GroundCube17" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 0, 0, 1)
-
-[node name="GroundCube18" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 1, 2.08165e-12, 2)
-
-[node name="GroundCube19" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 1, 2.08165e-12, 1)
-constant_linear_velocity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
-
-[node name="GroundCube20" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, -2, 2.08165e-12, 3)
-
-[node name="GroundCube21" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, -2, 2.08165e-12, 2)
-constant_linear_velocity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
-
-[node name="GroundCube22" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, -2, 0, 1)
-
-[node name="GroundCube23" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, -1, 2.08165e-12, 2)
-
-[node name="GroundCube24" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, -1, 2.08165e-12, 1)
-constant_linear_velocity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
-
-[node name="GroundCube25" parent="Environment/Cubes" instance=ExtResource("2_70cyh")]
-transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, -1, 0, 3)
-constant_linear_velocity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
-
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.707107, 0.541675, -0.454519, 2.24196e-16, 0.642788, 0.766044, 0.707107, 0.541675, -0.454519, -5, 8, -5)
+transform = Transform3D(-0.707107, 0.541675, -0.454519, 2.24196e-16, 0.642788, 0.766044, 0.707107, 0.541675, -0.454519, 2.08165e-12, 5, 2.08165e-12)
 projection = 1
 fov = 86.9
-size = 15.0
+size = 12.5
 script = ExtResource("3_138lr")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

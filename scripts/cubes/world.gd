@@ -2,7 +2,10 @@ extends Node3D
 
 var scene: PackedScene = preload("res://scenes/ground_cube.tscn")
 
+var cubes_node
+
 func _ready():
+	cubes_node = get_node("Environment/Cubes")
 	call_deferred("_init_world")
 
 func _init_world():
@@ -19,7 +22,6 @@ func _construct_world(save: World_Save):
 				z = z + 1
 			y = y + 1
 		x = x + 1
-	pass
 
 func _create_item(type: int, itemPosition: Vector3):
 	match type:
@@ -32,5 +34,5 @@ func _create_cube(cubePosition: Vector3):
 	var cube = scene.instantiate()  as Node3D
 	cube.position = cubePosition
 	
-	get_tree().root.add_child(cube)
+	cubes_node.add_child(cube)
 	

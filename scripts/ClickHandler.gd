@@ -19,7 +19,7 @@ func _input(event: InputEvent):
 	handle_click(result)
 	
 func handle_click(result):
-	print_debug(result.collider)
+	print_debug(result.collider.position)
 	
 func _process(delta):
 	pass
