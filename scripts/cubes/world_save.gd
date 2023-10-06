@@ -1,7 +1,5 @@
 extends Resource
-
-class_name World_Save
-enum TYPE { AIR, BLOCK }
+class_name WorldSave
 
 @export var x: int = 4
 @export var y: int = 3
