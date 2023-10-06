@@ -1,6 +1,7 @@
 extends Node3D
 
-var scene: PackedScene = preload("res://scenes/ground_cube.tscn")
+var block_scene: PackedScene = preload("res://scenes/ground_cube.tscn")
+var player_scene: PackedScene = preload("res://scenes/player.tscn")
 var cubes_node: Node
 
 var state: Array = []
@@ -33,18 +34,26 @@ func _create_item(type: BLOCK.TYPE, x: int, y: int, z: int):
 			return
 		BLOCK.TYPE.BLOCK:
 			var node = _create_cube(Vector3(x,y,z))
-			state[x][y][z]=StateBlock.new(BLOCK.TYPE.BLOCK, node)
+			state[x][y][z]=StateBlock.new(type, node)
+		BLOCK.TYPE.PLAYER:
+			var node = _create_player(Vector3(x,y,z))
+			state[x][y][z]=StateBlock.new(type, node)
 
 func _create_cube(cubePosition: Vector3): 
-	var cube = scene.instantiate() as Node3D
+	var cube = block_scene.instantiate() as Node3D
 	cube.position = cubePosition
 	
 	cubes_node.add_child(cube)
 	return cube
 
+func _create_player(cubePosition: Vector3): 
+	var cube = player_scene.instantiate() as Node3D
+	cube.position = cubePosition
+	cubes_node.add_child(cube)
+	return cube
+
 func _create_empty_state(save: WorldSave):
 	state.resize(save.x)
-	
 	for x in save.x:
 		state[x] = []
 		state[x].resize(save.y)

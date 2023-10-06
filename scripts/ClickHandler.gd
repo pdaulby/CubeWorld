@@ -20,6 +20,9 @@ func _input(event: InputEvent):
 	
 func handle_click(result):
 	print_debug(result.collider.position)
+	if result.collider is GroundCube:
+		print("groundCube")
+		result.collider.highlight()
 	
 func _process(delta):
 	pass

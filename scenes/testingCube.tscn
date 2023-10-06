@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://b5cl6t7353wl3"]
+
+[ext_resource type="Script" path="res://scripts/cubes/ground_cube.gd" id="1_4uek2"]
+[ext_resource type="PackedScene" uid="uid://dpicokj5tdxpt" path="res://3d/beveledCube.glb" id="2_lm3ph"]
+[ext_resource type="Script" path="res://scripts/cubes/colorBetween.gd" id="3_n7pk7"]
+[ext_resource type="PackedScene" uid="uid://d0rerut8rfjl4" path="res://scenes/player.tscn" id="4_0ssi0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gxq8i"]
+
+[node name="GroundCube" type="StaticBody3D"]
+transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 0, 0, 0)
+script = ExtResource("1_4uek2")
+
+[node name="beveledCube" parent="." instance=ExtResource("2_lm3ph")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 2.08165e-12, -1, 2.08165e-12)
+
+[node name="Cube" parent="beveledCube" index="0"]
+script = ExtResource("3_n7pk7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 4.94916e-12, -2.50514e-11, -2.76248e-11, 1, -3.13405e-12, 0, -2.91038e-11, 1, 2.08165e-12, -1, 2.08165e-12)
+shape = SubResource("BoxShape3D_gxq8i")
+
+[node name="Player" parent="." instance=ExtResource("4_0ssi0")]
+
+[editable path="beveledCube"]

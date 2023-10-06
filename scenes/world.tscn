@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://d2lkua6f2ssfw"]
 
-[ext_resource type="Script" path="res://scripts/cubes/world.gd" id="1_3khj0"]
-[ext_resource type="Script" path="res://scripts/ClickHandler.gd" id="3_138lr"]
+[ext_resource type="Script" path="res://scripts/cubes/world.gd" id="1_u0gk3"]
+[ext_resource type="Script" path="res://scripts/ClickHandler.gd" id="2_0gvur"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ff7ja"]
 
@@ -12,7 +12,7 @@ albedo_color = Color(0.298039, 0.592157, 0.611765, 1)
 ambient_light_color = Color(0.290196, 0.662745, 1, 1)
 
 [node name="World" type="Node3D"]
-script = ExtResource("1_3khj0")
+script = ExtResource("1_u0gk3")
 
 [node name="Environment" type="Node3D" parent="."]
 
@@ -24,11 +24,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_xcfyk")
 [node name="Cubes" type="Node3D" parent="Environment"]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.707107, 0.541675, -0.454519, 2.24196e-16, 0.642788, 0.766044, 0.707107, 0.541675, -0.454519, 2.08165e-12, 5, 2.08165e-12)
+transform = Transform3D(-0.707107, 0.541675, -0.454519, 2.24196e-16, 0.642788, 0.766044, 0.707107, 0.541675, -0.454519, 2.08165e-12, 3.65, 2.08165e-12)
 projection = 1
 fov = 86.9
-size = 12.5
-script = ExtResource("3_138lr")
+size = 8.0
+script = ExtResource("2_0gvur")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_d401f")
