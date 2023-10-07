@@ -1,24 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://0aeyiixqh43a"]
+[gd_scene load_steps=12 format=3 uid="uid://0aeyiixqh43a"]
 
 [ext_resource type="Script" path="res://scripts/cubes/ground_cube.gd" id="1_8iicp"]
 [ext_resource type="PackedScene" uid="uid://dpicokj5tdxpt" path="res://3d/beveledCube.glb" id="2_ql16w"]
 [ext_resource type="Script" path="res://scripts/cubes/colorBetween.gd" id="3_pin2a"]
-[ext_resource type="Shader" path="res://scripts/shaders/outline.gdshader" id="3_wkj8s"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_w5gsw"]
-resource_local_to_scene = true
-render_priority = 0
-shader = ExtResource("3_wkj8s")
-shader_parameter/border_width = 0.0
-shader_parameter/color = Color(1, 1, 1, 1)
-shader_parameter/pattern = null
-shader_parameter/line_number = null
-shader_parameter/line_sharpness = null
-shader_parameter/pulse = null
-shader_parameter/pulse_speed = null
-shader_parameter/line_movement = null
-shader_parameter/line_movement_speed = null
-shader_parameter/wave = null
+[ext_resource type="Material" uid="uid://bia4v578o2d8f" path="res://materials/walkable_highlight.tres" id="5_pu5n5"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nxh6k"]
 resource_name = "Material"
@@ -61,6 +46,16 @@ shadow_mesh = SubResource("ArrayMesh_v2jkv")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gxq8i"]
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_nj7om"]
+material = ExtResource("5_pu5n5")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dmn3u"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.701961)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ujutq"]
+material = SubResource("StandardMaterial3D_dmn3u")
+
 [node name="GroundCube" type="StaticBody3D"]
 transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 0, 0, 0)
 script = ExtResource("1_8iicp")
@@ -69,12 +64,21 @@ script = ExtResource("1_8iicp")
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="Cube" parent="beveledCube" index="0"]
-material_overlay = SubResource("ShaderMaterial_w5gsw")
 mesh = SubResource("ArrayMesh_85f1x")
 script = ExtResource("3_pin2a")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 4.94916e-12, -2.50514e-11, -2.76248e-11, 1, -3.13405e-12, 0, -2.91038e-11, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_gxq8i")
+
+[node name="WalkableHighlight" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.45, 0, 0, 0, 1, 0, 0, 0, 0.45, 2.08165e-12, 0.51, 2.08165e-12)
+visible = false
+mesh = SubResource("PlaneMesh_nj7om")
+
+[node name="TopHighlight" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.4, -3.48787e-16, 1.39515e-16, 1.39515e-16, 1, -1.39515e-16, -1.39515e-16, 3.48787e-16, 0.4, -1.14146e-11, 0.52, 1.45519e-11)
+visible = false
+mesh = SubResource("PlaneMesh_ujutq")
 
 [editable path="beveledCube"]

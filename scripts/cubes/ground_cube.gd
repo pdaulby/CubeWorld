@@ -10,5 +10,6 @@ func _ready():
 func _process(delta):
 	pass
 
-func highlight():
-	$beveledCube/Cube.material_overlay.set_shader_parameter("border_width", 0.06)
+func highlight(highlighted: bool):
+	#$WalkableHighlight.visible = true
+	$TopHighlight.visible = highlighted

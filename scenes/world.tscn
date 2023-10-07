@@ -1,12 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://d2lkua6f2ssfw"]
+[gd_scene load_steps=10 format=3 uid="uid://d2lkua6f2ssfw"]
 
 [ext_resource type="Script" path="res://scripts/cubes/world.gd" id="1_u0gk3"]
 [ext_resource type="Script" path="res://scripts/ClickHandler.gd" id="2_0gvur"]
+[ext_resource type="Script" path="res://scripts/DeleteOnLoad.gd" id="2_oygmx"]
+[ext_resource type="PackedScene" uid="uid://dpicokj5tdxpt" path="res://3d/beveledCube.glb" id="3_55vyd"]
+[ext_resource type="Script" path="res://scenes/BlockHighlighter.gd" id="4_m37th"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ff7ja"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xcfyk"]
 albedo_color = Color(0.298039, 0.592157, 0.611765, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_afyyh"]
 
 [sub_resource type="Environment" id="Environment_d401f"]
 ambient_light_color = Color(0.290196, 0.662745, 1, 1)
@@ -23,15 +28,33 @@ surface_material_override/0 = SubResource("StandardMaterial3D_xcfyk")
 
 [node name="Cubes" type="Node3D" parent="Environment"]
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Test Cube" type="StaticBody3D" parent="Environment"]
+transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 0, 0, 0)
+script = ExtResource("2_oygmx")
+
+[node name="beveledCube" parent="Environment/Test Cube" instance=ExtResource("3_55vyd")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+
+[node name="Highlighter" type="Node3D" parent="Environment"]
+script = ExtResource("4_m37th")
+
+[node name="TopHighlight" type="MeshInstance3D" parent="Environment/Highlighter"]
+transform = Transform3D(0.4, 0, 0, 0, 1, 0, 0, 0, 0.4, 2.08165e-12, 0.52, 2.08165e-12)
+mesh = SubResource("PlaneMesh_afyyh")
+skeleton = NodePath("../..")
+
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("highlighter")]
 transform = Transform3D(-0.707107, 0.541675, -0.454519, 2.24196e-16, 0.642788, 0.766044, 0.707107, 0.541675, -0.454519, 2.08165e-12, 3.65, 2.08165e-12)
 projection = 1
 fov = 86.9
 size = 8.0
 script = ExtResource("2_0gvur")
+highlighter = NodePath("../Environment/Highlighter")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_d401f")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
 transform = Transform3D(1, 0, 0, 0, 0.312783, 0.949825, 0, -0.949825, 0.312783, 0, 1.02772, 0)
+
+[editable path="Environment/Test Cube/beveledCube"]
