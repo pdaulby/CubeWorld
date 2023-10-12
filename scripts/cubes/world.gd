@@ -82,3 +82,10 @@ func _get_height(x, z) -> HeightBlock:
 	var hb = HeightBlock.new(bounds.y, Vector2i(x,z), StateBlock.new(BLOCK.TYPE.AIR, null))
 	hb.blocked = true
 	return hb
+
+func move_from_to(from: Vector3i, to: Vector3i):
+	var fromBlock = state[from.x][from.y][from.z]
+	var toBlock = state[to.x][to.y][to.z]
+	if toBlock.type != BLOCK.TYPE.AIR: assert(false, "oh fukfukfuk")
+	state[to.x][to.y][to.z] = fromBlock
+	state[from.x][from.y][from.z] = StateBlock.new(BLOCK.TYPE.AIR, null)
