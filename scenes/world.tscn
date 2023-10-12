@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=3 uid="uid://d2lkua6f2ssfw"]
 
 [ext_resource type="Script" path="res://scripts/cubes/world.gd" id="1_u0gk3"]
-[ext_resource type="Script" path="res://scripts/ClickHandler.gd" id="2_0gvur"]
 [ext_resource type="Script" path="res://scripts/DeleteOnLoad.gd" id="2_oygmx"]
 [ext_resource type="PackedScene" uid="uid://dpicokj5tdxpt" path="res://3d/beveledCube.glb" id="3_55vyd"]
 [ext_resource type="Script" path="res://scenes/BlockHighlighter.gd" id="4_m37th"]
+[ext_resource type="Script" path="res://scripts/click/camera_click.gd" id="5_xuykj"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ff7ja"]
 
@@ -48,7 +48,7 @@ transform = Transform3D(-0.707107, 0.541675, -0.454519, 2.24196e-16, 0.642788, 0
 projection = 1
 fov = 86.9
 size = 8.0
-script = ExtResource("2_0gvur")
+script = ExtResource("5_xuykj")
 highlighter = NodePath("../Environment/Highlighter")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -56,5 +56,7 @@ environment = SubResource("Environment_d401f")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
 transform = Transform3D(1, 0, 0, 0, 0.312783, 0.949825, 0, -0.949825, 0.312783, 0, 1.02772, 0)
+
+[node name="PlayerController" type="Node" parent="."]
 
 [editable path="Environment/Test Cube/beveledCube"]
