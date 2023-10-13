@@ -1,7 +1,7 @@
 class_name PushProp
 
-var height = 1
-var distance = 1
+var height = 1 #TODO handle stacks
+var distance = 3
 var direction: Vector3i = Vector3i(0,0,0)
 var block: Vector3i
 	
@@ -23,7 +23,8 @@ func from(from: Vector3i) -> PushProp:
 
 func is_valid():
 	if distance <= 0: return false
-	if direction.y != 0: return false
+	if direction.y != 0: 
+		return direction.y == -1 && direction.x == 0 && direction.z == 0
 	if direction.x == 1 || direction.x == -1:
 		return direction.z == 0
 	if direction.z == 1 || direction.z == -1:

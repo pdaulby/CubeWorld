@@ -1,5 +1,6 @@
 class_name World extends Node3D
 
+var push_speed = 10
 var block_scene: PackedScene = preload("res://scenes/ground_cube.tscn")
 var player_scene: PackedScene = preload("res://scenes/player.tscn")
 var cubes_node: Node
@@ -7,6 +8,7 @@ var characters_node: Node
 
 var bounds: Vector3i
 var state: Array = []
+var block_path: Array[Vector3i] = []
 
 func _ready():
 	cubes_node = get_node("Environment/Cubes")
@@ -100,18 +102,52 @@ func push_block(prop: PushProp):
 	var b = prop.block
 	var dist = prop.distance
 	var next = prop.block + prop.direction
-	var path = [prop.block]
+	var _path: Array[Vector3i] = [prop.block]
 	while dist > 0 && in_bounds(next): 
 		var next_block = get_block(next)
 		if next_block.type == BLOCK.TYPE.BLOCK:
 			break
-		path.append(next)
+		_path.append(next)
 		next = next + prop.direction
 		dist = dist - 1
-	print_debug(path)
+	if _path.size() <= 1: return
+	block_path = _path
+
+func _process(delta):
+	#TODO handle stacks
+	if block_path.size() == 0: return
+	var stateBlock = get_block(block_path[0])
+	if stateBlock.type != BLOCK.TYPE.BLOCK:
+		block_path = []
+		return
+		
+	stateBlock.node.position = stateBlock.node.position.move_toward(block_path[1], delta*push_speed)
+	if stateBlock.node.position.distance_to(block_path[1]) < 0.01:
+		stateBlock.node.position = block_path[1]
+		block_smash(block_path[1])
+		move_from_to(block_path[0], block_path[1])
+		block_path.remove_at(0)
+		if block_path.size() != 1: return
+		var below = Vector3i(block_path[0].x, block_path[0].y-1, block_path[0].z)
+		if !in_bounds(below) || get_block(below).type == BLOCK.TYPE.BLOCK:
+			block_path = []
+			return
+		var prop = PushProp.new(block_path[0])
+		prop.direction = Vector3i(0,-1,0)
+		prop.distance = 1
+		prop.height = bounds.y - block_path[0].y - 1
+		push_block(prop)
+
+func block_smash(v: Vector3i):
+	var block = get_block(v)
+	
+	if block.type == BLOCK.TYPE.PLAYER || block.type == BLOCK.TYPE.ENEMY:
+		#TODO kill node
+		state[v.x][v.y][v.z] = StateBlock.Air()
 
 func in_bounds(v: Vector3i): 
 	if v.x < 0 || v.y < 0 || v.z < 0: return false
 	return v.x < bounds.x && v.y < bounds.y && v.z < bounds.z
+	
 func get_block(v: Vector3i) -> StateBlock:
 	return state[v.x][v.y][v.z]

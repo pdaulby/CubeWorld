@@ -40,7 +40,7 @@ func _get_finished_list(heightGrid, start: Vector2i, end: Vector2i)->Array[Heigh
 func _can_jump(current: HeightBlock, to: HeightBlock):
 	var height = to.height - current.height
 	return height == 0 || height == -1
-	#return abs(current.height - to.height) > 1
+	#return abs(current.height - to.height) <= 1
 
 func get_neighbour_tiles(current: Vector2i, bounds: Vector3i)->Array[Vector2i]:
 	var toCheck: Array[Vector2i] = []

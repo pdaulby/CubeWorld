@@ -1,2 +1,2 @@
 class_name BLOCK
-enum TYPE { AIR, BLOCK, PLAYER }
+enum TYPE { AIR, BLOCK, PLAYER, ENEMY }
