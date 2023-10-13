@@ -2,7 +2,7 @@ class_name PushProp
 
 var height = 1
 var distance = 1
-var direction: Vector2i = Vector2i(0,0)
+var direction: Vector3i = Vector3i(0,0,0)
 var block: Vector3i
 	
 func _init(_block: Vector3i):
@@ -15,15 +15,17 @@ func from(from: Vector3i) -> PushProp:
 		direction.x = 1
 	elif block.x < from.x:
 		direction.x = -1
-	if block.y > from.y:
-		direction.y = 1
-	elif block.y < from.y:
-		direction.y = -1
+	if block.z > from.z:
+		direction.z = 1
+	elif block.z < from.z:
+		direction.z = -1
 	return self
 
-func isValid():
+func is_valid():
+	if distance <= 0: return false
+	if direction.y != 0: return false
 	if direction.x == 1 || direction.x == -1:
-		return direction.y == 0
-	if direction.y == 1 || direction.y == -1:
+		return direction.z == 0
+	if direction.z == 1 || direction.z == -1:
 		return direction.x == 0
 	return false

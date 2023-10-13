@@ -91,3 +91,27 @@ func move_from_to(from: Vector3i, to: Vector3i):
 	if toBlock.type != BLOCK.TYPE.AIR: assert(false, "oh fukfukfuk")
 	state[to.x][to.y][to.z] = fromBlock
 	state[from.x][from.y][from.z] = StateBlock.new(BLOCK.TYPE.AIR, null)
+	# figure out if i need to duplicate the locations more
+
+func push_block(prop: PushProp):
+	if !prop.is_valid(): 
+		print_debug("invalid")
+		return
+	var b = prop.block
+	var dist = prop.distance
+	var next = prop.block + prop.direction
+	var path = [prop.block]
+	while dist > 0 && in_bounds(next): 
+		var next_block = get_block(next)
+		if next_block.type == BLOCK.TYPE.BLOCK:
+			break
+		path.append(next)
+		next = next + prop.direction
+		dist = dist - 1
+	print_debug(path)
+
+func in_bounds(v: Vector3i): 
+	if v.x < 0 || v.y < 0 || v.z < 0: return false
+	return v.x < bounds.x && v.y < bounds.y && v.z < bounds.z
+func get_block(v: Vector3i) -> StateBlock:
+	return state[v.x][v.y][v.z]
