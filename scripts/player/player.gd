@@ -12,4 +12,4 @@ func activate_ability(i: int):
 	abilities[i].active = true
 
 func kill():
-	assert(false, "implement enemy kill")
+	assert(false, "implement player kill")
