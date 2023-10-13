@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://d0rerut8rfjl4"]
+[gd_scene load_steps=5 format=3 uid="uid://d0rerut8rfjl4"]
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1_8j234"]
 [ext_resource type="Texture2D" uid="uid://ci65v24ubf283" path="res://2d/FrogWiz.png" id="1_o3sgl"]
 [ext_resource type="Script" path="res://scripts/click/player_movement.gd" id="3_nkwi7"]
+[ext_resource type="Script" path="res://scripts/cubes/block_pusher.gd" id="4_xl8ci"]
 
 [node name="Player" type="Node3D"]
 script = ExtResource("1_8j234")
@@ -14,3 +15,6 @@ texture = ExtResource("1_o3sgl")
 
 [node name="PlayerMovement" type="Node" parent="."]
 script = ExtResource("3_nkwi7")
+
+[node name="BlockPusher" type="Node" parent="."]
+script = ExtResource("4_xl8ci")

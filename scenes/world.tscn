@@ -1,10 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://d2lkua6f2ssfw"]
+[gd_scene load_steps=14 format=3 uid="uid://d2lkua6f2ssfw"]
 
 [ext_resource type="Script" path="res://scripts/cubes/world.gd" id="1_u0gk3"]
 [ext_resource type="Script" path="res://scripts/DeleteOnLoad.gd" id="2_oygmx"]
 [ext_resource type="PackedScene" uid="uid://dpicokj5tdxpt" path="res://3d/beveledCube.glb" id="3_55vyd"]
 [ext_resource type="Script" path="res://scenes/BlockHighlighter.gd" id="4_m37th"]
 [ext_resource type="Script" path="res://scripts/click/camera_click.gd" id="5_xuykj"]
+[ext_resource type="Script" path="res://scripts/click/UI.gd" id="6_50j6f"]
+[ext_resource type="Texture2D" uid="uid://ci65v24ubf283" path="res://2d/FrogWiz.png" id="7_87s8f"]
+[ext_resource type="Script" path="res://scripts/click/character_ui.gd" id="7_rp6a3"]
+[ext_resource type="Texture2D" uid="uid://dtldl3hacqywi" path="res://icon.svg" id="8_7y3c6"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ff7ja"]
 
@@ -21,12 +25,16 @@ script = ExtResource("1_u0gk3")
 
 [node name="Environment" type="Node3D" parent="."]
 
+[node name="Cubes" type="Node3D" parent="Environment"]
+
+[node name="Characters" type="Node3D" parent="Environment"]
+
+[node name="Enemies" type="Node3D" parent="Environment"]
+
 [node name="Ground" type="MeshInstance3D" parent="Environment"]
 transform = Transform3D(90, 0, 0, 0, 1, 0, 0, 0, 90, 2.08165e-12, -0.5, 2.08165e-12)
 mesh = SubResource("PlaneMesh_ff7ja")
 surface_material_override/0 = SubResource("StandardMaterial3D_xcfyk")
-
-[node name="Cubes" type="Node3D" parent="Environment"]
 
 [node name="Test Cube" type="StaticBody3D" parent="Environment"]
 transform = Transform3D(1, 0.000205547, -0.000176113, -0.00020551, 1, 0.000191596, 0.000176156, -0.000191557, 1, 0, 0, 0)
@@ -57,6 +65,43 @@ environment = SubResource("Environment_d401f")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
 transform = Transform3D(1, 0, 0, 0, 0.312783, 0.949825, 0, -0.949825, 0.312783, 0, 1.02772, 0)
 
-[node name="PlayerController" type="Node" parent="."]
+[node name="UI" type="Node" parent="."]
+script = ExtResource("6_50j6f")
+
+[node name="Character" type="VBoxContainer" parent="UI"]
+offset_top = 6.0
+offset_right = 265.0
+offset_bottom = 577.0
+script = ExtResource("7_rp6a3")
+
+[node name="Portrait" type="TextureRect" parent="UI/Character"]
+layout_mode = 2
+texture = ExtResource("7_87s8f")
+expand_mode = 5
+
+[node name="Button4" type="Button" parent="UI/Character"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "move innit"
+theme_override_font_sizes/font_size = 34
+text = "move"
+icon = ExtResource("8_7y3c6")
+text_overrun_behavior = 1
+icon_alignment = 2
+expand_icon = true
+
+[node name="Button5" type="Button" parent="UI/Character"]
+custom_minimum_size = Vector2(20, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "do like the other thing"
+theme_override_font_sizes/font_size = 34
+text = "push"
+icon = ExtResource("8_7y3c6")
+icon_alignment = 2
+expand_icon = true
+
+[connection signal="pressed" from="UI/Character/Button4" to="UI/Character" method="activate_ability" binds= [0]]
+[connection signal="pressed" from="UI/Character/Button5" to="UI/Character" method="activate_ability" binds= [1]]
 
 [editable path="Environment/Test Cube/beveledCube"]

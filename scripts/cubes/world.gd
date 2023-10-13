@@ -3,12 +3,14 @@ class_name World extends Node3D
 var block_scene: PackedScene = preload("res://scenes/ground_cube.tscn")
 var player_scene: PackedScene = preload("res://scenes/player.tscn")
 var cubes_node: Node
+var characters_node: Node
 
 var bounds: Vector3i
 var state: Array = []
 
 func _ready():
 	cubes_node = get_node("Environment/Cubes")
+	characters_node = get_node("Environment/Characters")
 	call_deferred("_init_world")
 
 func _init_world():
@@ -48,7 +50,7 @@ func _create_cube(cubePosition: Vector3):
 func _create_player(cubePosition: Vector3): 
 	var cube = player_scene.instantiate() as Node3D
 	cube.position = cubePosition
-	cubes_node.add_child(cube)
+	characters_node.add_child(cube)
 	return cube
 
 func _create_empty_state(save: WorldSave):

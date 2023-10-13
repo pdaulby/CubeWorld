@@ -1,13 +1,12 @@
 class_name PlayerMovement extends Node
 
-@export var speed: int = 4
+@export var speed: int = 4 #todo use this
 var camera: CameraClick
-var enabled: bool = true
 var player: Player
 var world: World
 var path_finder = PathFinder.new()
 var current_path = []
-
+var active = true
 
 func _ready():
 	camera = get_node("/root/World/Camera3D")
@@ -15,7 +14,7 @@ func _ready():
 	player = get_parent() as Player
 
 func _input(event):
-	if current_path.size() > 0 || !enabled: return
+	if !active || !player.active || current_path.size() > 0: return
 	var result = camera.handle_click(event, [])
 	if result.is_empty(): return
 	if !result.collider is GroundCube: return

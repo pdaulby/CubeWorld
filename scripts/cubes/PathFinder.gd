@@ -1,7 +1,6 @@
 class_name PathFinder extends Object
 
 func find_path(heightGrid, bounds: Vector3i, start: Vector2i, end: Vector2i)->Array[HeightBlock]:
-	#var gridList: Array[HeightBlock] = heightGrid.map(func(a): return a.flat())
 	var openList: Array[HeightBlock] = [ heightGrid[start.x][start.y] ]
 	var closedList: Array[HeightBlock] = []
 	
@@ -14,7 +13,7 @@ func find_path(heightGrid, bounds: Vector3i, start: Vector2i, end: Vector2i)->Ar
 		
 		for location in get_neighbour_tiles(current.xz, bounds):
 			var tile: HeightBlock = heightGrid[location.x][location.y]
-			if tile.is_blocked() || closedList.has(tile) || _cannot_jump(current, tile):
+			if tile.is_blocked() || closedList.has(tile) || !_can_jump(current, tile):
 				continue
 			#the following could be in a separate non modifiable class
 			#and open list could consist of that
@@ -38,8 +37,10 @@ func _get_finished_list(heightGrid, start: Vector2i, end: Vector2i)->Array[Heigh
 	finishedList.reverse()
 	return finishedList
 	
-func _cannot_jump(current: HeightBlock, to: HeightBlock):
-	return abs(current.height - to.height) > 1
+func _can_jump(current: HeightBlock, to: HeightBlock):
+	var height = to.height - current.height
+	return height == 0 || height == -1
+	#return abs(current.height - to.height) > 1
 
 func get_neighbour_tiles(current: Vector2i, bounds: Vector3i)->Array[Vector2i]:
 	var toCheck: Array[Vector2i] = []
