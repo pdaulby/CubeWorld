@@ -3,8 +3,10 @@ class_name World extends Node3D
 var push_speed = 10
 var block_scene: PackedScene = preload("res://scenes/ground_cube.tscn")
 var player_scene: PackedScene = preload("res://scenes/player.tscn")
+var enemy_scene: PackedScene = preload("res://scenes/enemy.tscn")
 var cubes_node: Node
 var characters_node: Node
+var enemies_node: Node
 
 var bounds: Vector3i
 var state: Array = []
@@ -13,6 +15,7 @@ var block_path: Array[Vector3i] = []
 func _ready():
 	cubes_node = get_node("Environment/Cubes")
 	characters_node = get_node("Environment/Characters")
+	enemies_node = get_node("Environment/Enemies")
 	call_deferred("_init_world")
 
 func _init_world():
@@ -41,6 +44,11 @@ func _create_item(type: BLOCK.TYPE, x: int, y: int, z: int):
 		BLOCK.TYPE.PLAYER:
 			var node = _create_player(Vector3(x,y,z))
 			state[x][y][z]=StateBlock.new(type, node)
+		BLOCK.TYPE.ENEMY:
+			var node = _create_enemy(Vector3(x,y,z))
+			state[x][y][z]=StateBlock.new(type, node)
+		_: 
+			assert(false, "not used the type")
 
 func _create_cube(cubePosition: Vector3): 
 	var cube = block_scene.instantiate() as Node3D
@@ -49,11 +57,17 @@ func _create_cube(cubePosition: Vector3):
 	cubes_node.add_child(cube)
 	return cube
 
-func _create_player(cubePosition: Vector3): 
-	var cube = player_scene.instantiate() as Node3D
-	cube.position = cubePosition
-	characters_node.add_child(cube)
-	return cube
+func _create_player(pos: Vector3): 
+	var p = player_scene.instantiate() as Node3D
+	p.position = pos
+	characters_node.add_child(p)
+	return p
+
+func _create_enemy(pos: Vector3): 
+	var e = enemy_scene.instantiate() as Node3D
+	e.position = pos
+	enemies_node.add_child(e)
+	return e
 
 func _create_empty_state(save: WorldSave):
 	bounds = save.bounds
@@ -114,12 +128,15 @@ func push_block(prop: PushProp):
 	block_path = _path
 
 func _process(delta):
-	#TODO handle stacks
 	if block_path.size() == 0: return
 	var stateBlock = get_block(block_path[0])
 	if stateBlock.type != BLOCK.TYPE.BLOCK:
 		block_path = []
 		return
+	
+	var above = Vector3i(block_path[0].x, block_path[0].y+1, block_path[0].z)
+	if !in_bounds(above) || get_block(above).type != BLOCK.TYPE.AIR:
+		assert(false, "TODO handle stacks")
 		
 	stateBlock.node.position = stateBlock.node.position.move_toward(block_path[1], delta*push_speed)
 	if stateBlock.node.position.distance_to(block_path[1]) < 0.01:
@@ -142,7 +159,7 @@ func block_smash(v: Vector3i):
 	var block = get_block(v)
 	
 	if block.type == BLOCK.TYPE.PLAYER || block.type == BLOCK.TYPE.ENEMY:
-		#TODO kill node
+		block.node.kill()
 		state[v.x][v.y][v.z] = StateBlock.Air()
 
 func in_bounds(v: Vector3i): 

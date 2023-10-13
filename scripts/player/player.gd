@@ -10,3 +10,6 @@ func activate_ability(i: int):
 	for ability in abilities:
 		ability.active = false
 	abilities[i].active = true
+
+func kill():
+	assert(false, "implement enemy kill")

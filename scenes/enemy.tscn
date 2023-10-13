@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://b06r0ujnedmt"]
+
+[ext_resource type="Texture2D" path="res://2d/crab.png" id="1_h53cy"]
+[ext_resource type="Script" path="res://scripts/player/enemy.gd" id="1_l7yli"]
+
+[node name="Enemy" type="Node3D"]
+script = ExtResource("1_l7yli")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+billboard = 1
+texture = ExtResource("1_h53cy")
