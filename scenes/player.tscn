@@ -18,3 +18,5 @@ script = ExtResource("3_nkwi7")
 
 [node name="BlockPusher" type="Node" parent="."]
 script = ExtResource("4_xl8ci")
+
+[node name="Elevate" type="Node" parent="."]

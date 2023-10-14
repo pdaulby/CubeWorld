@@ -135,7 +135,7 @@ func _process(delta):
 		return
 	
 	var above = Vector3i(block_path[0].x, block_path[0].y+1, block_path[0].z)
-	if !in_bounds(above) || get_block(above).type != BLOCK.TYPE.AIR:
+	if in_bounds(above) && get_block(above).type != BLOCK.TYPE.AIR:
 		assert(false, "TODO handle stacks")
 		
 	stateBlock.node.position = stateBlock.node.position.move_toward(block_path[1], delta*push_speed)

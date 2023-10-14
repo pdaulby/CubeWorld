@@ -18,4 +18,16 @@ func _input(event):
 	var cube: GroundCube = result.collider
 	if cube.position.distance_to(player.position) > 1: return
 	var prop = PushProp.new(cube.position).from(player.position)
+	
+	if !in_stack_limit(prop.height, prop.block): return
 	world.push_block(prop)
+
+func in_stack_limit(height: int, block: Vector3i)->bool:
+	var higher_block = block + Vector3i.UP
+	if !world.in_bounds(higher_block):
+		return true
+	if world.get_block(higher_block).type != BLOCK.TYPE.BLOCK:
+		return true
+	if height <= 1: 
+		return false
+	return in_stack_limit(height + 1, higher_block)

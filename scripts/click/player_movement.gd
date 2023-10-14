@@ -27,7 +27,8 @@ func _input(event):
 	world.move_from_to(player.position, current_path[current_path.size()-1])
 
 func _process(delta):
-	if current_path.size() == 0: return
+	if current_path.size() == 0: 
+		return
 	player.position = player.position.move_toward(current_path[0], delta*speed)
 	if player.position.distance_to(current_path[0]) < 0.01:
 		player.position = current_path[0]
