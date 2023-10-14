@@ -93,9 +93,13 @@ func to_2d():
 
 func _get_height(x, z) -> HeightBlock:
 	for y in bounds.y:
-		if (state[x][y][z].type != BLOCK.TYPE.BLOCK):
+		if state[x][y][z].type != BLOCK.TYPE.BLOCK:
 			var hb = HeightBlock.new(y, Vector2i(x,z), state[x][y][z])
-			if y == 0: hb.blocked = true
+			if y == 0:
+				hb.blocked = true
+			if state[x][y][z].type != BLOCK.TYPE.AIR:
+				hb.blocked = true 
+				#TODO smarter handling of walking through other units
 			return hb
 	var hb = HeightBlock.new(bounds.y, Vector2i(x,z), StateBlock.new(BLOCK.TYPE.AIR, null))
 	hb.blocked = true
@@ -129,31 +133,53 @@ func push_block(prop: PushProp):
 
 func _process(delta):
 	if block_path.size() == 0: return
+	print(block_path)
 	var stateBlock = get_block(block_path[0])
 	if stateBlock.type != BLOCK.TYPE.BLOCK:
 		block_path = []
 		return
 	
-	var above = Vector3i(block_path[0].x, block_path[0].y+1, block_path[0].z)
-	if in_bounds(above) && get_block(above).type != BLOCK.TYPE.AIR:
-		assert(false, "TODO handle stacks")
-		
-	stateBlock.node.position = stateBlock.node.position.move_toward(block_path[1], delta*push_speed)
-	if stateBlock.node.position.distance_to(block_path[1]) < 0.01:
-		stateBlock.node.position = block_path[1]
-		block_smash(block_path[1])
-		move_from_to(block_path[0], block_path[1])
-		block_path.remove_at(0)
-		if block_path.size() != 1: return
-		var below = Vector3i(block_path[0].x, block_path[0].y-1, block_path[0].z)
-		if !in_bounds(below) || get_block(below).type == BLOCK.TYPE.BLOCK:
-			block_path = []
-			return
-		var prop = PushProp.new(block_path[0])
-		prop.direction = Vector3i(0,-1,0)
-		prop.distance = 1
-		prop.height = bounds.y - block_path[0].y - 1
-		push_block(prop)
+	
+	var froms: Array[Vector3i] = [block_path[0]]
+	var tos: Array[Vector3i] = [block_path[1]]
+	var nodes: Array[Node3D] = [stateBlock.node]
+	
+	var above = block_path[0] + Vector3i.UP
+	while in_bounds(above) && get_block(above).type != BLOCK.TYPE.AIR:
+		froms.append(Util.last(froms) + Vector3i.UP)
+		tos.append(Util.last(tos) + Vector3i.UP)
+		nodes.append(get_block(Util.last(froms)).node)
+		above = above + Vector3i.UP
+	
+	for i in froms.size():
+		nodes[i].position = nodes[i].position.move_toward(tos[i], delta*push_speed)
+	
+	if nodes[0].position.distance_to(tos[0]) > 0.01:
+		return
+	
+	for i in froms.size():
+		nodes[i].position = tos[i]
+		block_smash(tos[i])
+		move_from_to(froms[i], tos[i])
+	
+	block_path.remove_at(0)
+	if block_path.size() != 1: 
+		print_debug("SIZE "+str(block_path.size()))
+		return
+	print_debug("SIZE "+str(block_path.size()))
+	var below = Vector3i(block_path[0].x, block_path[0].y-1, block_path[0].z)
+	if !in_bounds(below) || get_block(below).type == BLOCK.TYPE.BLOCK:
+		block_path = []
+		print_debug("nograv")
+		# TODO signal finished
+		return
+	print_debug("grav")
+	# gravity drop
+	var prop = PushProp.new(block_path[0])
+	prop.direction = Vector3i(0,-1,0)
+	prop.distance = 1
+	prop.height = bounds.y - block_path[0].y - 1
+	push_block(prop)
 
 func block_smash(v: Vector3i):
 	var block = get_block(v)

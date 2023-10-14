@@ -1,6 +1,6 @@
 class_name PushProp
 
-var height = 1 #TODO handle stacks
+var height = 2
 var distance = 3
 var direction: Vector3i = Vector3i(0,0,0)
 var block: Vector3i

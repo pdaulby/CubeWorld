@@ -8,3 +8,6 @@ static func is_v2i(v: Vector2):
 	
 static func is_v3i(v: Vector3):
 	return v.distance_to(Vector3i(v)) == 0
+
+static func last(arr: Array):
+	return arr[arr.size()-1]
