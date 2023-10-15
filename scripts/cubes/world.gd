@@ -12,6 +12,8 @@ var bounds: Vector3i
 var state: Array = []
 var block_path: Array[Vector3i] = []
 
+var processing: bool = false
+
 func _ready():
 	cubes_node = get_node("Environment/Cubes")
 	characters_node = get_node("Environment/Characters")
@@ -99,7 +101,7 @@ func _get_height(x, z) -> HeightBlock:
 				hb.blocked = true
 			if state[x][y][z].type != BLOCK.TYPE.AIR:
 				hb.blocked = true 
-				#TODO smarter handling of walking through other units
+				#TODO smarter handling of walking through other units (maybe)
 			return hb
 	var hb = HeightBlock.new(bounds.y, Vector2i(x,z), StateBlock.new(BLOCK.TYPE.AIR, null))
 	hb.blocked = true
@@ -130,6 +132,7 @@ func push_block(prop: PushProp):
 		dist = dist - 1
 	if _path.size() <= 1: return
 	block_path = _path
+	processing = true
 
 func _process(delta):
 	if block_path.size() == 0: return
@@ -171,7 +174,7 @@ func _process(delta):
 	if !in_bounds(below) || get_block(below).type == BLOCK.TYPE.BLOCK:
 		block_path = []
 		print_debug("nograv")
-		# TODO signal finished
+		processing = false
 		return
 	print_debug("grav")
 	# gravity drop

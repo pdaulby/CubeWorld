@@ -1,6 +1,6 @@
 class_name PlayerMovement extends Node
 
-@export var speed: int = 4 #todo use this
+@export var speed: int = 4 
 var camera: CameraClick
 var player: Player
 var world: World
@@ -14,7 +14,7 @@ func _ready():
 	player = get_parent() as Player
 
 func _input(event):
-	if !active || !player.active || current_path.size() > 0: return
+	if world.processing || !active || !player.active || current_path.size() > 0: return
 	var result = camera.handle_click(event, [])
 	if result.is_empty(): return
 	if !result.collider is GroundCube: return
@@ -25,6 +25,7 @@ func _input(event):
 	current_path = path.map(func(h:HeightBlock): return Vector3i(h.xz.x, h.height, h.xz.y))
 	if current_path.is_empty(): return
 	world.move_from_to(player.position, current_path[current_path.size()-1])
+	world.processing = true
 
 func _process(delta):
 	if current_path.size() == 0: 
@@ -33,3 +34,4 @@ func _process(delta):
 	if player.position.distance_to(current_path[0]) < 0.01:
 		player.position = current_path[0]
 		current_path.remove_at(0)
+		world.processing = false

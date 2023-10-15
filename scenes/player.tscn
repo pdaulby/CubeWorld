@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://d0rerut8rfjl4"]
+[gd_scene load_steps=6 format=3 uid="uid://d0rerut8rfjl4"]
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1_8j234"]
 [ext_resource type="Texture2D" uid="uid://ci65v24ubf283" path="res://2d/FrogWiz.png" id="1_o3sgl"]
 [ext_resource type="Script" path="res://scripts/click/player_movement.gd" id="3_nkwi7"]
 [ext_resource type="Script" path="res://scripts/cubes/block_pusher.gd" id="4_xl8ci"]
+[ext_resource type="Script" path="res://scripts/cubes/elevate.gd" id="5_2ka8v"]
 
 [node name="Player" type="Node3D"]
 script = ExtResource("1_8j234")
@@ -20,3 +21,4 @@ script = ExtResource("3_nkwi7")
 script = ExtResource("4_xl8ci")
 
 [node name="Elevate" type="Node" parent="."]
+script = ExtResource("5_2ka8v")

@@ -32,6 +32,7 @@ func handle_click(event: InputEvent, exclude: Array[RID] = [])->Dictionary:
 	var result = raycast_mouse(event.position, exclude)
 	if (result.is_empty()):
 		return {}
+	highlighter.unhighlight()
 	return result
 	
 func _process(delta):

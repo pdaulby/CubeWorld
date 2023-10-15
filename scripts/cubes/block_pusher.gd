@@ -11,7 +11,7 @@ func _ready():
 	camera = get_node("/root/World/Camera3D")
 
 func _input(event):
-	if !active || !player.active: return
+	if world.processing || !active || !player.active: return
 	var result = camera.handle_click(event, [])
 	if result.is_empty(): return
 	if !result.collider is GroundCube: return
@@ -22,7 +22,7 @@ func _input(event):
 	if !in_stack_limit(prop.height, prop.block): return
 	world.push_block(prop)
 
-func in_stack_limit(height: int, block: Vector3i)->bool:
+func in_stack_limit(height: int, block: Vector3i) -> bool:
 	var higher_block = block + Vector3i.UP
 	if !world.in_bounds(higher_block):
 		return true
