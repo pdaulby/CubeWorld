@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://d2lkua6f2ssfw"]
+[gd_scene load_steps=15 format=3 uid="uid://d2lkua6f2ssfw"]
 
 [ext_resource type="Script" path="res://scripts/cubes/world.gd" id="1_u0gk3"]
 [ext_resource type="Script" path="res://scripts/DeleteOnLoad.gd" id="2_oygmx"]
 [ext_resource type="PackedScene" uid="uid://dpicokj5tdxpt" path="res://3d/beveledCube.glb" id="3_55vyd"]
 [ext_resource type="Script" path="res://scenes/BlockHighlighter.gd" id="4_m37th"]
+[ext_resource type="Script" path="res://scripts/click/CamControls.gd" id="5_q1git"]
 [ext_resource type="Script" path="res://scripts/click/camera_click.gd" id="5_xuykj"]
 [ext_resource type="Script" path="res://scripts/click/UI.gd" id="6_50j6f"]
 [ext_resource type="Texture2D" uid="uid://ci65v24ubf283" path="res://2d/FrogWiz.png" id="7_87s8f"]
@@ -51,13 +52,17 @@ transform = Transform3D(0.4, 0, 0, 0, 1, 0, 0, 0, 0.4, 2.08165e-12, 0.52, 2.0816
 mesh = SubResource("PlaneMesh_afyyh")
 skeleton = NodePath("../..")
 
-[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("highlighter")]
-transform = Transform3D(-0.707107, 0.541675, -0.454519, 2.24196e-16, 0.642788, 0.766044, 0.707107, 0.541675, -0.454519, 2.08165e-12, 3.65, 2.08165e-12)
+[node name="CamControls" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2.08165e-12, 2)
+script = ExtResource("5_q1git")
+
+[node name="Camera3D" type="Camera3D" parent="CamControls" node_paths=PackedStringArray("highlighter")]
+transform = Transform3D(-0.642788, 0.586824, -0.492404, 2.24196e-16, 0.642788, 0.766044, 0.766044, 0.492404, -0.413176, -2, 3.65, -2)
 projection = 1
 fov = 86.9
 size = 8.0
 script = ExtResource("5_xuykj")
-highlighter = NodePath("../Environment/Highlighter")
+highlighter = NodePath("../../Environment/Highlighter")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_d401f")

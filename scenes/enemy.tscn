@@ -13,18 +13,18 @@ curve = SubResource("Curve_qrool")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dd5xl"]
 direction = Vector3(2.08165e-12, 1, 2.08165e-12)
 spread = 50.0
-gravity = Vector3(2.08165e-12, -16.8, 2.08165e-12)
 initial_velocity_min = 6.0
 initial_velocity_max = 8.0
 angular_velocity_max = 1.4988e-14
+gravity = Vector3(2.08165e-12, -16.8, 2.08165e-12)
 damping_min = 7.0
 damping_max = 10.0
+attractor_interaction_enabled = false
 scale_min = 0.3
 scale_max = 0.5
 scale_curve = SubResource("CurveTexture_frjbv")
 turbulence_noise_strength = 0.2
 turbulence_noise_scale = 2.9
-attractor_interaction_enabled = false
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1rouc"]
 albedo_color = Color(0.960784, 0.0392157, 0.054902, 1)

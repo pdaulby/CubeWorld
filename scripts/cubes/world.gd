@@ -20,6 +20,118 @@ func _ready():
 	enemies_node = get_node("Environment/Enemies")
 	call_deferred("_init_world")
 
+func to_2d():
+	var grid = []
+	grid.resize(bounds.x)
+	for x in bounds.x:
+		grid[x] = []
+		grid[x].resize(bounds.z)
+		for z in bounds.z:
+			grid[x][z] = _get_height(x, z)
+	return grid
+
+func _get_height(x, z) -> HeightBlock:
+	for y in bounds.y:
+		if state[x][y][z].type != BLOCK.TYPE.BLOCK:
+			var hb = HeightBlock.new(y, Vector2i(x,z), state[x][y][z])
+			if y == 0:
+				hb.blocked = true
+			if state[x][y][z].type != BLOCK.TYPE.AIR:
+				hb.blocked = true 
+				#TODO smarter handling of walking through other units (maybe)
+			return hb
+	var hb = HeightBlock.new(bounds.y, Vector2i(x,z), StateBlock.new(BLOCK.TYPE.AIR, null))
+	hb.blocked = true
+	return hb
+
+func move_from_to(from: Vector3i, to: Vector3i):
+	var fromBlock = state[from.x][from.y][from.z]
+	var toBlock = state[to.x][to.y][to.z]
+	if toBlock.type != BLOCK.TYPE.AIR: assert(false, "oh fukfukfuk")
+	state[to.x][to.y][to.z] = fromBlock
+	state[from.x][from.y][from.z] = StateBlock.new(BLOCK.TYPE.AIR, null)
+	# figure out if i need to duplicate the locations more
+
+func push_block(prop: PushProp):
+	if !prop.is_valid(): 
+		print_debug("invalid")
+		return
+	var b = prop.block
+	var dist = prop.distance
+	var next = prop.block + prop.direction
+	var _path: Array[Vector3i] = [prop.block]
+	while dist > 0 && in_bounds(next): 
+		var next_block = get_block(next)
+		if next_block.type == BLOCK.TYPE.BLOCK:
+			break
+		_path.append(next)
+		next = next + prop.direction
+		dist = dist - 1
+	if _path.size() <= 1: return
+	block_path = _path
+	processing = true
+
+func _process(delta):
+	if block_path.size() == 0: return
+	print(block_path)
+	var stateBlock = get_block(block_path[0])
+	if stateBlock.type != BLOCK.TYPE.BLOCK:
+		assert(false, "currently only designed to push blocks")
+	
+	var froms: Array[Vector3i] = [block_path[0]]
+	var tos: Array[Vector3i] = [block_path[1]]
+	var nodes: Array[Node3D] = [stateBlock.node]
+	
+	var above = block_path[0] + Vector3i.UP
+	while in_bounds(above) && get_block(above).type != BLOCK.TYPE.AIR:
+		froms.append(Util.last(froms) + Vector3i.UP)
+		tos.append(Util.last(tos) + Vector3i.UP)
+		nodes.append(get_block(Util.last(froms)).node)
+		above = above + Vector3i.UP
+	
+	for i in froms.size():
+		nodes[i].position = nodes[i].position.move_toward(tos[i], delta*push_speed)
+	
+	if nodes[0].position.distance_to(tos[0]) > 0.01:
+		return
+	
+	for i in froms.size():
+		nodes[i].position = tos[i]
+		block_smash(tos[i])
+		move_from_to(froms[i], tos[i])
+	
+	block_path.remove_at(0)
+	if block_path.size() != 1: 
+		return
+	var below = Vector3i(block_path[0].x, block_path[0].y-1, block_path[0].z)
+	if !in_bounds(below) || get_block(below).type == BLOCK.TYPE.BLOCK:
+		block_path = []
+		print_debug("nograv")
+		processing = false
+		return
+	print_debug("grav")
+	# gravity drop
+	var prop = PushProp.new(block_path[0])
+	prop.direction = Vector3i(0,-1,0)
+	prop.distance = 1
+	prop.height = bounds.y - block_path[0].y - 1
+	push_block(prop)
+
+func block_smash(v: Vector3i):
+	var block = get_block(v)
+	
+	if block.type == BLOCK.TYPE.PLAYER || block.type == BLOCK.TYPE.ENEMY:
+		block.node.kill()
+		state[v.x][v.y][v.z] = StateBlock.Air()
+
+func in_bounds(v: Vector3i): 
+	if v.x < 0 || v.y < 0 || v.z < 0: return false
+	return v.x < bounds.x && v.y < bounds.y && v.z < bounds.z
+	
+func get_block(v: Vector3i) -> StateBlock:
+	return state[v.x][v.y][v.z]
+
+
 func _init_world():
 	_construct_world(WorldSave.new())
 
@@ -82,118 +194,3 @@ func _create_empty_state(save: WorldSave):
 			state[x][y].resize(bounds.z)
 			for z in bounds.z:
 				state[x][y][z] = StateBlock.new(BLOCK.TYPE.AIR, null)
-
-func to_2d():
-	var grid = []
-	grid.resize(bounds.x)
-	for x in bounds.x:
-		grid[x] = []
-		grid[x].resize(bounds.z)
-		for z in bounds.z:
-			grid[x][z] = _get_height(x, z)
-	return grid
-
-func _get_height(x, z) -> HeightBlock:
-	for y in bounds.y:
-		if state[x][y][z].type != BLOCK.TYPE.BLOCK:
-			var hb = HeightBlock.new(y, Vector2i(x,z), state[x][y][z])
-			if y == 0:
-				hb.blocked = true
-			if state[x][y][z].type != BLOCK.TYPE.AIR:
-				hb.blocked = true 
-				#TODO smarter handling of walking through other units (maybe)
-			return hb
-	var hb = HeightBlock.new(bounds.y, Vector2i(x,z), StateBlock.new(BLOCK.TYPE.AIR, null))
-	hb.blocked = true
-	return hb
-
-func move_from_to(from: Vector3i, to: Vector3i):
-	var fromBlock = state[from.x][from.y][from.z]
-	var toBlock = state[to.x][to.y][to.z]
-	if toBlock.type != BLOCK.TYPE.AIR: assert(false, "oh fukfukfuk")
-	state[to.x][to.y][to.z] = fromBlock
-	state[from.x][from.y][from.z] = StateBlock.new(BLOCK.TYPE.AIR, null)
-	# figure out if i need to duplicate the locations more
-
-func push_block(prop: PushProp):
-	if !prop.is_valid(): 
-		print_debug("invalid")
-		return
-	var b = prop.block
-	var dist = prop.distance
-	var next = prop.block + prop.direction
-	var _path: Array[Vector3i] = [prop.block]
-	while dist > 0 && in_bounds(next): 
-		var next_block = get_block(next)
-		if next_block.type == BLOCK.TYPE.BLOCK:
-			break
-		_path.append(next)
-		next = next + prop.direction
-		dist = dist - 1
-	if _path.size() <= 1: return
-	block_path = _path
-	processing = true
-
-func _process(delta):
-	if block_path.size() == 0: return
-	print(block_path)
-	var stateBlock = get_block(block_path[0])
-	if stateBlock.type != BLOCK.TYPE.BLOCK:
-		block_path = []
-		return
-	
-	
-	var froms: Array[Vector3i] = [block_path[0]]
-	var tos: Array[Vector3i] = [block_path[1]]
-	var nodes: Array[Node3D] = [stateBlock.node]
-	
-	var above = block_path[0] + Vector3i.UP
-	while in_bounds(above) && get_block(above).type != BLOCK.TYPE.AIR:
-		froms.append(Util.last(froms) + Vector3i.UP)
-		tos.append(Util.last(tos) + Vector3i.UP)
-		nodes.append(get_block(Util.last(froms)).node)
-		above = above + Vector3i.UP
-	
-	for i in froms.size():
-		nodes[i].position = nodes[i].position.move_toward(tos[i], delta*push_speed)
-	
-	if nodes[0].position.distance_to(tos[0]) > 0.01:
-		return
-	
-	for i in froms.size():
-		nodes[i].position = tos[i]
-		block_smash(tos[i])
-		move_from_to(froms[i], tos[i])
-	
-	block_path.remove_at(0)
-	if block_path.size() != 1: 
-		print_debug("SIZE "+str(block_path.size()))
-		return
-	print_debug("SIZE "+str(block_path.size()))
-	var below = Vector3i(block_path[0].x, block_path[0].y-1, block_path[0].z)
-	if !in_bounds(below) || get_block(below).type == BLOCK.TYPE.BLOCK:
-		block_path = []
-		print_debug("nograv")
-		processing = false
-		return
-	print_debug("grav")
-	# gravity drop
-	var prop = PushProp.new(block_path[0])
-	prop.direction = Vector3i(0,-1,0)
-	prop.distance = 1
-	prop.height = bounds.y - block_path[0].y - 1
-	push_block(prop)
-
-func block_smash(v: Vector3i):
-	var block = get_block(v)
-	
-	if block.type == BLOCK.TYPE.PLAYER || block.type == BLOCK.TYPE.ENEMY:
-		block.node.kill()
-		state[v.x][v.y][v.z] = StateBlock.Air()
-
-func in_bounds(v: Vector3i): 
-	if v.x < 0 || v.y < 0 || v.z < 0: return false
-	return v.x < bounds.x && v.y < bounds.y && v.z < bounds.z
-	
-func get_block(v: Vector3i) -> StateBlock:
-	return state[v.x][v.y][v.z]

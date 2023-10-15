@@ -8,7 +8,7 @@ var active = false
 func _ready():
 	player = get_parent() as Player
 	world = get_node("/root/World")
-	camera = get_node("/root/World/Camera3D")
+	camera = get_node("/root/World/CamControls/Camera3D")
 
 func _input(event):
 	if world.processing || !active || !player.active: return

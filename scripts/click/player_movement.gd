@@ -9,7 +9,7 @@ var current_path = []
 var active = true
 
 func _ready():
-	camera = get_node("/root/World/Camera3D")
+	camera = get_node("/root/World/CamControls/Camera3D")
 	world = get_node("/root/World")
 	player = get_parent() as Player
 
