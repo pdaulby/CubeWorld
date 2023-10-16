@@ -14,7 +14,7 @@ func _init(_height: int, _xz: Vector2i, _block: StateBlock):
 	block = _block
 
 func _to_string():
-	return str(block.type)
+	return str(xz) + " " + str(G) + " " + str(H)
 
 func is_blocked():
 	return blocked

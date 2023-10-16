@@ -5,6 +5,8 @@ func find_path(heightGrid, bounds: Vector3i, start: Vector2i, end: Vector2i)->Ar
 	var closedList: Array[HeightBlock] = []
 	
 	while openList.size() > 0:
+		print_debug(" " + str(openList))
+		print_debug(closedList)
 		openList.sort_custom(_compare_reverse_F)
 		var current: HeightBlock = openList.pop_back()
 		closedList.append(current)
@@ -26,7 +28,11 @@ func find_path(heightGrid, bounds: Vector3i, start: Vector2i, end: Vector2i)->Ar
 	return []
 
 func _compare_reverse_F(a: HeightBlock, b: HeightBlock):
-	return (a.G+a.H)>(b.G+b.H)
+	var AF = a.G+a.H
+	var BF = b.G+b.H
+	if AF == BF:
+		return b.H < a.H
+	return AF > BF
 	
 func _get_finished_list(heightGrid, start: Vector2i, end: Vector2i)->Array[HeightBlock]:
 	var finishedList: Array[HeightBlock] = []
